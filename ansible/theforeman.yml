@@ -10,6 +10,11 @@
         owner: root
         group: root
         mode: '0644'
+    - name: add puppet GPG key
+      ansible.builtin.apt_key:
+        id: 0BDDA991FD7AAC8A
+        url: http://apt.puppet.com/pubkey.gpg
+        state: present
     - name: theforeman repo is present
       ansible.builtin.template:
         src: ./theforeman/foreman.list.j2
@@ -21,3 +26,4 @@
       ansible.builtin.apt_key:
         id: 0BDDA991FD7AAC8A
         url: http://deb.theforeman.org/pubkey.gpg
+        state: present

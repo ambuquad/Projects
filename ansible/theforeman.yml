@@ -22,8 +22,22 @@
         owner: root
         group: root
         mode: '0644'
-    - name: add theforeman GPG key
+    - name: theforeman GPG key is present
       ansible.builtin.apt_key:
         id: 0BDDA991FD7AAC8A
-        url: http://deb.theforeman.org/pubkey.gpg
+        url: https://deb.theforeman.org/pubkey.gpg
         state: present
+    - name: update/upgrade OS
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: yes
+        cache_valid_time: 120
+    - name: ca-certificates and foreman-installer are installed
+      ansible.builtin.apt:
+        name: '{{ item }}'
+        state: present
+        update_cache: yes
+        cache_valid_time: 120
+      loop:
+        - 'ca-certificates'
+        - 'foreman-installer'

@@ -3,10 +3,21 @@
   hosts: "{{  lookup('env', 'ANSIBLEHOST') }}"
   become: true
   tasks:
-    - name: puppet repo is present.
-      build.in.template:
-        src: ./theforeman/puppet.j2
-        dest: /etc/apt/sources.list.d/puppet.conf
+    - name: puppet repo is present
+      ansible.builtin.template:
+        src: ./theforeman/puppet.list.j2
+        dest: /etc/apt/sources.list.d/puppet.list
         owner: root
         group: root
         mode: '0644'
+    - name: theforeman repo is present
+      ansible.builtin.template:
+        src: ./theforeman/foreman.list.j2
+        dest: /etc/apt/sources.list.d/foreman.list
+        owner: root
+        group: root
+        mode: '0644'
+    - name: add theforeman GPG key
+      ansible.builtin.apt_key:
+        id: 0BDDA991FD7AAC8A
+        url: http://deb.theforeman.org/pubkey.gpg

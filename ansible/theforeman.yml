@@ -1,0 +1,12 @@
+---
+- name: install theforeman
+  hosts: "{{  lookup('env', 'ANSIBLEHOST') }}"
+  become: true
+  tasks:
+    - name: puppet repo is present.
+      build.in.template:
+        src: ./theforeman/puppet.j2
+        dest: /etc/apt/sources.list.d/puppet.conf
+        owner: root
+        group: root
+        mode: '0644'

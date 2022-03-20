@@ -1,0 +1,12 @@
+---
+- name: configure netplan
+  hosts: "{{ lookup('env', 'ANSIBLEHOST') }}"
+  become: yes
+  tasks:
+    - name: 00-dennisconfig.yaml exsists
+      template:
+        src: ./netplan/00-static.j2
+        dest: /etc/netplan/00-static.yaml
+        group: root
+        owner: root
+        mode: '0644'

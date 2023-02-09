@@ -1,0 +1,123 @@
+#cloud-config
+autoinstall:
+  updates: security
+  apt:
+    disable_components: []
+    geoip: true
+    preserve_sources_list: false
+    primary:
+    - arches:
+      - amd64
+      uri: http://localhost/ubuntu
+    - arches:
+      - default
+      uri: http://localhost/ubuntu-ports
+  drivers:
+    install: false
+  identity:
+    hostname: test
+    password: $6$rfIKU5WC4tLd4/3Z$2xC1ZUfY1UG98IA66xAvVcC6OFolxkfupLZo99pIi6WZ/I/S4/lChHQ1tDBQQtsNpqjmW0HbZwwm4p6wJekxF.
+    realname: mrrobot
+    username: mrrobot
+  kernel:
+    package: linux-generic
+  keyboard:
+    layout: us
+    toggle: null
+    variant: ''
+  locale: en_US.UTF-8
+  network:
+    ethernets:
+      enp1s0:
+        addresses:
+        - 192.168.122.222/24
+        gateway4: 192.168.122.1
+        nameservers:
+          addresses:
+          - 8.8.8.8
+          search: []
+    version: 2
+  snaps:
+  - channel: stable
+    classic: false
+    name: docker
+  ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: true
+  storage:
+    config:
+    - ptable: gpt
+      path: /dev/vda
+      wipe: superblock
+      preserve: false
+      name: ''
+      grub_device: true
+      type: disk
+      id: disk-vda
+    - device: disk-vda
+      size: 1048576
+      flag: bios_grub
+      number: 1
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-0
+    - device: disk-vda
+      size: 2147483648
+      wipe: superblock
+      flag: ''
+      number: 2
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-1
+    - fstype: ext4
+      volume: partition-1
+      preserve: false
+      type: format
+      id: format-0
+    - device: disk-vda
+      size: 24692916224
+      wipe: superblock
+      flag: ''
+      number: 3
+      preserve: false
+      grub_device: false
+      type: partition
+      id: partition-2
+    - name: ubuntu-vg
+      devices:
+      - partition-2
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      volgroup: lvm_volgroup-0
+      size: 12343836672B
+      wipe: superblock
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
+    - fstype: ext4
+      volume: lvm_partition-0
+      preserve: false
+      type: format
+      id: format-1
+    - path: /
+      device: format-1
+      type: mount
+      id: mount-1
+    - path: /boot
+      device: format-0
+      type: mount
+      id: mount-0
+  late-commands:
+    - touch /target/test-1.txt
+    - curtin in-target --target=/target -- touch /test-2.txt
+    - cp /cdrom/nocloud/packets/*.deb /target/var/cache/apt/archives/
+    - mkdir /target/opt/docker/
+    - cp /cdrom/nocloud/docker/nginx_1_23_3.docker /target/opt/docker/
+    - dpkg -i /target/var/cache/apt/archives/*.deb
+    - docker load -i /target/opt/docker/nginx_1_23_3.docker
+  version: 1

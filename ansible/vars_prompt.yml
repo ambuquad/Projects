@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: false
+  gather_facts: false
+  vars_prompt:
+    - name: testing
+      prompt: what is the issue nr?
+      private: no
+  tasks:
+    - name: debug the vars_prompt 
+      ansible.builtin.debug:
+        msg: 'The issue number is: {{ testing }}'
+    

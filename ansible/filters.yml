@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: false
+  become: false
+  tasks:
+    - name: testing product 
+      lineinfile:
+        path: ./file.txt
+        state: present
+        line: '{{ item.0 }} {{ item.1 }}'
+        create: yes
+        mode: '0766'
+      loop: "{{ ['arie','kees']|product(['eerste','tweede'])| list }}"
+        

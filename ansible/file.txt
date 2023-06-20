@@ -1,0 +1,8 @@
+['arie', 'eerste'] raar
+['arie', 'eerste'] gek
+['arie', 'tweede'] raar
+['arie', 'tweede'] gek
+['kees', 'eerste'] raar
+['kees', 'eerste'] gek
+['kees', 'tweede'] raar
+['kees', 'tweede'] gek

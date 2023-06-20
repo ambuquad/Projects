@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  become: false
+  gather_facts: false
+  vars:
+    tarief_1: "{{ lookup('url','http://192.168.0.27/sensor/energy_consumed_tariff_1') }}"
+    tarief_2: "{{ lookup('url','http://192.168.0.27/sensor/energy_consumed_tariff_2') }}"
+  tasks:
+    - name: put lines in file
+      ansible.builtin.lineinfile:
+        msg: "{{ item }}"
+      with_items:
+        - "{{ tarief_1.state }}"
+        - "{{ tarief_2.state }}"

@@ -1,27 +1,46 @@
 ---
 - name: install theforeman
-  hosts: "{{  lookup('env', 'ANSIBLEHOST') }}"
+  hosts: 192.168.122.222
   become: true
+  vars:
+    foreman_version: 3.6
   tasks:
+    - name: 'Set hostname to {{ ansible_host }}' 
+      ansible.builtin.hostname:
+        name: '{{ ansible_host }}'
+
+    - name: 'Entry {{ ansible_fqdn }} is present in /etc/hosts'
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: '{{ ansible_default_ipv4.address }} {{ ansible_host }} {{ ansible_hostname }}'
+        insertbefore: '# The following lines are desirable for IPv6 capable hosts'
+
+    - name: Comment out 127.0.1.1 entry
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^127\.0\.1\.1'
+        line: '# 127.0.1.1 {{ ansible_hostname }}'
+
     - name: puppet repo is present
       ansible.builtin.template:
-        src: ./theforeman/puppet.list.j2
+        src: ./templates/theforeman/puppet.list.j2
         dest: /etc/apt/sources.list.d/puppet.list
         owner: root
         group: root
         mode: '0644'
     - name: add puppet GPG key
+
       ansible.builtin.apt_key:
-        id: 0BDDA991FD7AAC8A
         url: http://apt.puppet.com/pubkey.gpg
         state: present
     - name: theforeman repo is present
       ansible.builtin.template:
-        src: ./theforeman/foreman.list.j2
+        src: ./templates/theforeman/foreman.list.j2
         dest: /etc/apt/sources.list.d/foreman.list
         owner: root
         group: root
         mode: '0644'
+
     - name: theforeman GPG key is present
       ansible.builtin.apt_key:
         id: 0BDDA991FD7AAC8A
@@ -29,15 +48,40 @@
         state: present
     - name: update/upgrade OS
       ansible.builtin.apt:
-        update_cache: yes
-        upgrade: yes
+        update_cache: true
+        upgrade: true
         cache_valid_time: 120
+
     - name: ca-certificates and foreman-installer are installed
       ansible.builtin.apt:
         name: '{{ item }}'
         state: present
-        update_cache: yes
+        update_cache: true
         cache_valid_time: 120
+      when: not ansible_check_mode
       loop:
         - 'ca-certificates'
         - 'foreman-installer'
+      notify: Reboot machine
+
+    - name: /etc/foreman-installer/scenarios.d exists
+      ansible.builtin.file:
+        path: /etc/foreman-installer/secarios.d
+        state: directory
+        recurse: true
+        owner: root
+        group: root
+        mode: '0755'
+
+    # - name: 'Foreman-answers file for version {{ foreman_version }} is present'
+    #   ansible.builtin.template:
+    #     src: ./templates/theforeman/foreman-answers-{{ foreman_version }}.yaml.j2
+    #     dest: /etc/foreman-installer/scenarios.d/foreman-answers.yaml
+    #     owner: root
+    #     group: root
+    #     mode: '0600'
+
+  handlers:
+    - name: Reboot machine
+      ansible.builtin.reboot:
+

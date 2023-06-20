@@ -168,7 +168,7 @@ foreman_proxy:
   logs_listen_on: https
   httpboot: false
   httpboot_listen_on: both
-  tftp: false
+  tftp: {{ proxy_tftp }}
   tftp_listen_on: https
   tftp_managed: true
   tftp_manage_wget: true
@@ -176,11 +176,11 @@ foreman_proxy:
   tftp_dirs: 
   tftp_servername: 
   tftp_replace_grub2_cfg: false
-  dhcp: true
+  dhcp: {{ proxy_dhcp }}
   dhcp_listen_on: https
   dhcp_managed: true
   dhcp_provider: isc
-  dhcp_subnets: [192.168.122.0/24]
+  dhcp_subnets: []
   dhcp_ping_free_ip: true
   dhcp_option_domain:
   - ambuquad.loc
@@ -199,8 +199,8 @@ foreman_proxy:
   dhcp_server: 127.0.0.1
   dhcp_config: "/etc/dhcp/dhcpd.conf"
   dhcp_leases: "/var/lib/dhcp/dhcpd.leases"
-  dhcp_key_name: 
-  dhcp_key_secret: 
+  dhcp_key_name: OMAPI
+  dhcp_key_secret: 7rXyjRu2TOPiwb/d7lTdgA==
   dhcp_omapi_port: 7911
   dhcp_peer_address: 
   dhcp_node_type: standalone

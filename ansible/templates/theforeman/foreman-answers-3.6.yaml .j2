@@ -38,14 +38,14 @@ foreman:
   oauth_consumer_secret: nBbvrptPYwMHnrwpF9AHZpKKz6wWXNJe
   oauth_effective_user: admin
   initial_admin_username: admin
-  initial_admin_password: NNuJ2NfCrurnKcH6
-  initial_admin_first_name: 
+  initial_admin_password: CarlyChaikin
+  initial_admin_first_name: Twiki
   initial_admin_last_name: 
   initial_admin_email: 
   initial_admin_locale: 
-  initial_admin_timezone: 
-  initial_organization: 
-  initial_location: 
+  initial_admin_timezone: UTC
+  initial_organization: Computer Council
+  initial_location: WMware
   ipa_authentication: false
   ipa_authentication_api: false
   http_keytab: 
@@ -168,7 +168,7 @@ foreman_proxy:
   logs_listen_on: https
   httpboot: false
   httpboot_listen_on: both
-  tftp: true
+  tftp: {{ proxy_tftp }}
   tftp_listen_on: https
   tftp_managed: true
   tftp_manage_wget: true
@@ -176,7 +176,7 @@ foreman_proxy:
   tftp_dirs: 
   tftp_servername: 
   tftp_replace_grub2_cfg: false
-  dhcp: true
+  dhcp: {{ proxy_dhcp }}
   dhcp_listen_on: https
   dhcp_managed: true
   dhcp_provider: isc

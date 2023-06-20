@@ -174,7 +174,7 @@ foreman_proxy:
   tftp_manage_wget: true
   tftp_root: "/srv/tftp"
   tftp_dirs: 
-  tftp_servername: 
+  tftp_servername:
   tftp_replace_grub2_cfg: false
   dhcp: false
   dhcp_listen_on: https

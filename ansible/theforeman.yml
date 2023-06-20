@@ -3,11 +3,11 @@
   hosts: 192.168.122.222
   become: true
   vars:
-    foreman_version: 3.6
+    foreman_version: 3.5
     proxy_dhcp: true
     proxy_tftp: true
   tasks:
-    - name: 'Set hostname to {{ ansible_host }}' 
+    - name: 'Set hostname to {{ ansible_host }}'
       ansible.builtin.hostname:
         name: '{{ ansible_host }}'
 
@@ -86,4 +86,3 @@
   handlers:
     - name: Reboot machine
       ansible.builtin.reboot:
-

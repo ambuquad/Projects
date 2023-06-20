@@ -15,3 +15,8 @@ key "OMAPI" {
 	secret "7rXyjRu2TOPiwb/d7lTdgA==";
 };
 de
+
+## trial and error
+
+dhcp_subnets + dhcp_key_name + dhcp_key_secret = ERF12-6899 [ProxyAPI::ProxyException]: Unable to set DHCP entry ([RestClient::BadRequest]: 400 Bad Request) for proxy https://foreman.ambuquad.loc:8443/dhcp
+dhcp_key_name + dhcp_key_secret

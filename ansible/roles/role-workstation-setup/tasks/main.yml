@@ -1,0 +1,27 @@
+---
+- name: Add microsoft.asc key
+  ansible.builtin.apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: Add Microsoft repo
+  ansible.builtin.apt_repository:
+    repo: deb-src https://packages.microsoft.com/repos/code stable main
+    state: present
+
+- name: packages are present
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+    update_cache: true
+  loop:
+    - firefox
+    - google-chrome-stable
+    - keepassxc
+    - code
+    - ansible-lint
+
+- name: Create desktop.sh
+  ansible.builtin.template:
+    source: desktop.sh.j2
+    dest: /tmp/desktop.sh

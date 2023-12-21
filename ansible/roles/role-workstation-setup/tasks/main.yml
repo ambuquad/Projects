@@ -1,4 +1,9 @@
 ---
+- name: do some debugging
+  ansible.builtin.debug:
+    msg: '{{ user_homedir }}/Pictures'
+  tags: never, debug
+
 - name: Add microsoft.asc key
   ansible.builtin.apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
@@ -20,8 +25,28 @@
     - keepassxc
     - code
     - ansible-lint
+    - gimp
+
+- name: Folders are present
+  ansible.builtin.file:
+    path: '{{ user_homedir }}/{{ item }}'
+    state: directory
+    mode: '0755'
+    owner: '{{ user_user }}'
+  loop:
+    - 'Pictures/Wallpapers'
+
+- name: Wallpapers are present
+  ansible.builtin.copy:
+    src: 'wallpaper/{{ item }}'
+    dest: '{{ user_homedir }}/{{ item }}'
+    owner: '{{ user_user }}'
+    mode: '0755'
+  loop: '{{ desktop_wallpapers }}'
 
 - name: Create desktop.sh
   ansible.builtin.template:
-    source: desktop.sh.j2
+    src: desktop.sh.j2
     dest: /tmp/desktop.sh
+    mode: '0755'
+    owner: '{{ user_user }}'

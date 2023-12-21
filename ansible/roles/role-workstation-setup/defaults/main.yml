@@ -1,2 +1,4 @@
 ---
-# defaults file for role-workstation-setup
+desktop_wallpapers: "{{ lookup('ansible.builtin.fileglob', 'wallpaper/*.jpeg').split(',') | map('basename') | list }}"
+user_homedir: "{{ lookup('env', 'HOME') }}"
+user_user: "{{ lookup('env', 'USER') }}"

@@ -1,4 +1,5 @@
 ---
 desktop_wallpapers: "{{ lookup('ansible.builtin.fileglob', 'wallpaper/*.jpeg').split(',') | map('basename') | list }}"
+system_apps: ["firefox","google-chrome-stable","keepassxc","code","ansible-lint","gimp","qemu-kvm","virt-manager","libvirt-daemon-system","virtinst","libvirt-clients","bridge-utils"]
 user_homedir: "{{ lookup('env', 'HOME') }}"
 user_user: "{{ lookup('env', 'USER') }}"

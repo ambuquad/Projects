@@ -19,20 +19,15 @@
     name: '{{ item }}'
     state: present
     update_cache: true
-  loop:
-    - firefox
-    - google-chrome-stable
-    - keepassxc
-    - code
-    - ansible-lint
-    - gimp
+  loop: '{{ system_apps }}'
 
 - name: Folders are present
   ansible.builtin.file:
     path: '{{ user_homedir }}/{{ item }}'
     state: directory
-    mode: '0755'
+    group: '{{ user_user }}'
     owner: '{{ user_user }}'
+    mode: '0755'
   loop:
     - 'Pictures/Wallpapers'
 
@@ -40,6 +35,7 @@
   ansible.builtin.copy:
     src: 'wallpaper/{{ item }}'
     dest: '{{ user_homedir }}/{{ item }}'
+    group: '{{ user_user }}'
     owner: '{{ user_user }}'
     mode: '0755'
   loop: '{{ desktop_wallpapers }}'
@@ -48,5 +44,6 @@
   ansible.builtin.template:
     src: desktop.sh.j2
     dest: /tmp/desktop.sh
-    mode: '0755'
+    group: '{{ user_user }}'
     owner: '{{ user_user }}'
+    mode: '0755'

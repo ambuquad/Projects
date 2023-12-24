@@ -1,12 +1,15 @@
-Role Name
+Workstation Setup
 =========
 
-A brief description of the role goes here.
+Quickly setup your workstation as required.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Create a backup of your Chrome book marks - (~/.config/google-chrome/Default/Bookmarks)
+Encrypt the Bookmarks if required with:
+ ansible-vault encrypt Bookmarks-chrome.j2
+And put the .j2 file the templates folder.
 
 Role Variables
 --------------
@@ -16,21 +19,24 @@ A description of the settable variables for this role should go here, including 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    ---
+    - hosts: localhost
+      connection: local
+      remote_user: root
       roles:
-         - { role: username.rolename, x: 42 }
+        - role-workstation-setup
 
 License
 -------
 
-BSD
+None
 
 Author Information
 ------------------

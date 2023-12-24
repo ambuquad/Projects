@@ -34,7 +34,7 @@
 - name: Wallpapers are present
   ansible.builtin.copy:
     src: 'wallpaper/{{ item }}'
-    dest: '{{ user_homedir }}/{{ item }}'
+    dest: '{{ user_homedir }}/Pictures/Wallpapers/{{ item }}'
     group: '{{ user_user }}'
     owner: '{{ user_user }}'
     mode: '0755'
@@ -47,3 +47,24 @@
     group: '{{ user_user }}'
     owner: '{{ user_user }}'
     mode: '0755'
+
+- name: Create chrome bookmarks
+  ansible.builtin.template:
+    src: Bookmarks-chrome.j2
+    dest: "{{user_homedir}}/.config/google-chrome/Default/Bookmarks"
+    group: '{{ user_user }}'
+    owner: '{{ user_user }}'
+    mode: '0600'
+
+- name: Setup Golang developmentend kit
+  ansible.builtin.unarchive:
+    src: 'https://go.dev/dl/{{ golang_package }}'
+    dest: '{{ golang_location }}'
+    owner: root
+    group: root
+    remote_src: yes
+
+- name: Add golang path to $PATH
+  ansible.builtin.lineinfile:
+    path: '{{ user_homedir }}/.profile'
+    line: 'export PATH={{ golang_location }}go/bin/:$PATH'

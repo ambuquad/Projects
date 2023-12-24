@@ -1,5 +1,32 @@
 ---
+golang_package: go1.21.5.linux-amd64.tar.gz
+golang_location: '/usr/local/'
 desktop_wallpapers: "{{ lookup('ansible.builtin.fileglob', 'wallpaper/*.jpeg').split(',') | map('basename') | list }}"
-system_apps: ["firefox","google-chrome-stable","keepassxc","code","ansible-lint","gimp","qemu-kvm","virt-manager","libvirt-daemon-system","virtinst","libvirt-clients","bridge-utils"]
+system_apps:
+  - firefox
+  - google-chrome-stable
+  - keepassxc
+  - code
+  - ansible-lint
+  - gimp
+  - qemu-kvm
+  - virt-manager
+  - libvirt-daemon-system
+  - virtinst
+  - libvirt-clients
+  - bridge-utils
+  - terminator
+system_fav_apps:
+  - firefox.desktop
+  - google-chrome.desktop
+  - gimp.desktop
+  - org.gnome.Nautilus.desktop
+  - org.gnome.Terminal.desktop
+  - terminator.desktop
+  - code.desktop
+  - org.gnome.gedit.desktop
+  - libreoffice-writer.desktop
+  - virt-manager.desktop
+  - keepassxc_keepassxc.desktop
 user_homedir: "{{ lookup('env', 'HOME') }}"
 user_user: "{{ lookup('env', 'USER') }}"

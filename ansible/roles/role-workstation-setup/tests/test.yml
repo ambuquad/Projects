@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  connection: local
+  connection: ansible.builtin.local
   remote_user: root
   roles:
     - role-workstation-setup

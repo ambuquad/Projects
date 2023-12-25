@@ -12,3 +12,18 @@ connection: local
 
 ### Getting files from a directory and put basename in a list
 "{{ lookup('ansible.builtin.fileglob', 'wallpaper/*.jpeg').split(',') | map('basename') | list }}"
+
+## Filters
+
+### Default
+{{ some_variable | default(5) }}
+{{ item.mode | default(omit) }}
+{{ lookup('env', 'MY_USER') | default('admin', true) }}
+
+### Random
+{{ ['a','b','c'] | random }}
+{{ 60 | random }}
+{{ 101 | random(step=10) }}
+
+### Product (cartesian product)
+{{ ['foo', 'bar'] | product(['com']) | map('join', '.') | join(',') }}
